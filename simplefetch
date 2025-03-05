@@ -1,0 +1,19 @@
+#!/bin/bash
+bold="\033[1m" reset="\033[0m" blue="\033[34m" green="\033[32m" yellow="\033[33m" purple="\033[35m"
+user=$(whoami) hostname=$(hostname) os=$(awk -F= '/^PRETTY_NAME/ {print $2}' /etc/os-release | tr -d '"')
+kernel=$(uname -r) uptime=$(uptime -p | sed 's/up //' | sed 's/^[[:space:]]*//') shell=$(echo $SHELL)
+cpu=$(lscpu | awk -F: '/Model name/ {print $2}' | sed 's/^ *//') memory=$(free -h --si | awk '/Mem:/ {print $3 "/" $2}')
+disk=$(df -h / | awk 'NR==2 {print $3 "/" $2}')
+host_model=$(cat /sys/class/dmi/id/product_name 2>/dev/null || echo "not specified")
+bios_version=$(cat /sys/class/dmi/id/bios_version 2>/dev/null || echo "not specified")
+host="$([ "$host_model" != "not specified" ] && echo "$host_model $bios_version" || echo "$host_model$bios_version")"
+output="${bold}${green}$user${reset}${bold}@${blue}$hostname${reset}\n"
+[ "$os" != "not specified" ] && output+="${yellow}OS${reset}: $os\n"
+[ "$host" != "not specified" ] && output+="${yellow}Host${reset}: $host\n"
+[ -n "$kernel" ] && output+="${yellow}Kernel${reset}: $kernel\n"
+[ -n "$uptime" ] && output+="${yellow}Uptime${reset}: $uptime\n"
+[ -n "$shell" ] && output+="${yellow}Shell${reset}: $shell\n"
+[ -n "$cpu" ] && output+="${yellow}CPU${reset}: $cpu\n"
+[ -n "$memory" ] && output+="${yellow}Memory${reset}: $memory\n"
+[ -n "$disk" ] && output+="${yellow}Disk${reset}: $disk"
+echo -e "$output"

@@ -6,7 +6,7 @@
 
 1. **Run our install-script**:
     ```bash
-    wget {comingsoon}
+    wget https://raw.githubusercontent.com/katy-the-kat/simplefetch/refs/heads/main/install && bash install
     ```
 
 The script will output various system information in a colorful, human-readable format.

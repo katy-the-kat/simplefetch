@@ -1,0 +1,4 @@
+wget -O /usr/bin/simplefetch https://raw.githubusercontent.com/katy-the-kat/simplefetch/refs/heads/main/simplefetch
+chmod +x /usr/bin/simplefetch
+clear
+simplefetch
